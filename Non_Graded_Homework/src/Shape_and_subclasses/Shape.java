@@ -1,17 +1,16 @@
 package Shape_and_subclasses;
 
-public abstract class Shape implements Cloneable, Moveable, Rotatable, Describeable, Comparable<Shape> {
+public abstract class Shape implements Cloneable, Moveable, Rotatable, Comparable<Shape>, Describable {
     public Shape prev, next;
 
     public abstract String getName();
 
-    @Override
-    public void describe() {
-        System.out.print(this.getName() + ": " + this.getArea());
-    }
-
     public abstract int getHeight();
 
+    public void describe() {
+        System.out.print(getName() + ": " + getArea());
+    }
+    
     public abstract int getXCoordinate();
 
     public abstract int getYCoordinate();

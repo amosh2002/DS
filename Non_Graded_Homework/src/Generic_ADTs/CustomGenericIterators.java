@@ -1,11 +1,10 @@
 package Generic_ADTs;
 
-import Shape_and_subclasses.Describeable;
-import Shape_and_subclasses.Shape;
+import Shape_and_subclasses.Describable;
 
 import java.util.Iterator;
 
-public interface CustomGenericIterators<E extends Describeable & Comparable<E> & Cloneable> {
+public interface CustomGenericIterators<E extends Describable & Comparable<E> & Cloneable> {
     Iterator<E> startIndexIterator(int index);
 
     Iterator<E> endIndexIterator(int index);

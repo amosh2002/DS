@@ -2,7 +2,6 @@ package Shapes_ADTs.Stack;
 
 import Shape_and_subclasses.Shape;
 import Shapes_ADTs.LinkedList.ShapesLinkedList;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
@@ -45,7 +44,6 @@ public class ShapesLinkedListStack implements ShapesStack, Iterable<Shape> {
         return shapes.indexOf(e);
     }
 
-    @NotNull
     @Override
     public Iterator<Shape> iterator() {
         return new ShapesLLStackIterator();

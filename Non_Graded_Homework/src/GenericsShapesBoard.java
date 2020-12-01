@@ -1,8 +1,5 @@
 import Generic_ADTs.ArrayList.GenericsArrayList;
-import Generic_ADTs.GenericsList;
-import Shape_and_subclasses.Circle;
-import Shape_and_subclasses.Describeable;
-import Shape_and_subclasses.Rectangle;
+import Shape_and_subclasses.*;
 import Shape_and_subclasses.Shape;
 import Utils.CustomSortingAlgorithms;
 

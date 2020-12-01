@@ -2,11 +2,11 @@ package Generic_ADTs.ArrayList;
 
 import Generic_ADTs.CustomGenericIterators;
 import Generic_ADTs.GenericsList;
-import Shape_and_subclasses.Describeable;
+import Shape_and_subclasses.Describable;
 
 import java.util.Iterator;
 
-public class GenericsArrayList<T extends Describeable & Cloneable & Comparable<T>> implements GenericsList<T>, Iterable<T>, CustomGenericIterators<T> {
+public class GenericsArrayList<T extends Describable & Cloneable & Comparable<T>> implements GenericsList<T>, Iterable<T>, CustomGenericIterators<T> {
     private Object[] array;
     private int size;
 

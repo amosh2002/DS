@@ -2,11 +2,11 @@ package Generic_ADTs.LinkedList;
 
 import Generic_ADTs.CustomGenericIterators;
 import Generic_ADTs.GenericsList;
-import Shape_and_subclasses.Describeable;
+import Shape_and_subclasses.Describable;
 
 import java.util.Iterator;
 
-public class GenericsLinkedList<T extends Describeable & Cloneable & Comparable<T>> implements GenericsList<T>, Iterable<T>, CustomGenericIterators<T> {
+public class GenericsLinkedList<T extends Describable & Cloneable & Comparable<T>> implements GenericsList<T>, Iterable<T>, CustomGenericIterators<T> {
     private Node<T> first, last;
     private int size;
 
@@ -16,7 +16,7 @@ public class GenericsLinkedList<T extends Describeable & Cloneable & Comparable<
         size = 0;
     }
 
-    public static class Node<T extends Describeable> {
+    public static class Node<T extends Describable> {
         protected T data;
         protected Node<T> prev, next;
 

@@ -1,8 +1,7 @@
 package Generic_ADTs.LinkedList;
 
-import Shape_and_subclasses.Circle;
-import Shape_and_subclasses.Rectangle;
-import Shape_and_subclasses.Shape;
+import Shape_and_subclasses.*;
+
 
 import java.util.Iterator;
 

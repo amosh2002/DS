@@ -1,13 +1,12 @@
 package Shapes_ADTs.ArrayList;
 
 import Shape_and_subclasses.*;
-import Shapes_ADTs.CustomShapesIterators;
-import Shapes_ADTs.ShapesList;
+import Shapes_ADTs.*;
 
 import java.util.Iterator;
 
 
-public class ShapesArrayList implements ShapesList, Iterable<Shape>, CustomShapesIterators {
+public class ShapesArrayList implements Iterable<Shape>, CustomShapesIterators, ShapesList {
     private Shape[] shapes;
     private int size;
 

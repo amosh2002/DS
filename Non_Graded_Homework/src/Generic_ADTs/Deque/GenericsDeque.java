@@ -1,8 +1,8 @@
 package Generic_ADTs.Deque;
 
-import Shape_and_subclasses.Describeable;
+import Shape_and_subclasses.Describable;
 
-public interface GenericsDeque<T extends Describeable> {
+public interface GenericsDeque<T extends Describable> {
     void push_front(T tItem);
 
     T pop_front();

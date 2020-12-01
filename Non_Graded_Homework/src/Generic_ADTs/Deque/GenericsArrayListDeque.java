@@ -1,11 +1,11 @@
 package Generic_ADTs.Deque;
 
-import Shape_and_subclasses.Describeable;
+import Shape_and_subclasses.Describable;
 import Shape_and_subclasses.Shape;
 
 import java.util.Iterator;
 
-public class GenericsArrayListDeque<T extends Describeable> implements GenericsDeque<T>, Iterable<T> {
+public class GenericsArrayListDeque<T extends Describable> implements GenericsDeque<T>, Iterable<T> {
     Object[] tList;
     int first, size;
 

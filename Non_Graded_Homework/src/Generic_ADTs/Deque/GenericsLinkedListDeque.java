@@ -1,11 +1,11 @@
 package Generic_ADTs.Deque;
 
-import Shape_and_subclasses.Describeable;
+import Shape_and_subclasses.Describable;
 import Generic_ADTs.LinkedList.*;
 
 import java.util.Iterator;
 
-public class GenericsLinkedListDeque<T extends Describeable & Cloneable & Comparable<T>> implements GenericsDeque<T>, Iterable<T> {
+public class GenericsLinkedListDeque<T extends Describable & Cloneable & Comparable<T>> implements GenericsDeque<T>, Iterable<T> {
     GenericsLinkedList<T> tList;
     int size;
 

@@ -1,8 +1,8 @@
 package Generic_ADTs;
 
-import Shape_and_subclasses.Describeable;
+import Shape_and_subclasses.Describable;
 
-public interface GenericsList<T extends Describeable & Comparable<T> & Cloneable> extends Iterable<T>, CustomGenericIterators<T> {
+public interface GenericsList<T extends Describable & Comparable<T> & Cloneable> extends Iterable<T>, CustomGenericIterators<T> {
     int addLast(T tItem);
     void addFirst(T tItem);
     void removeLast();

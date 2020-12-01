@@ -1,13 +1,12 @@
 package Utils;
 
 import Generic_ADTs.GenericsList;
-import Shape_and_subclasses.Describeable;
-import org.jetbrains.annotations.NotNull;
+import Shape_and_subclasses.Describable;
 
 import java.util.Iterator;
 
 public class CustomSortingAlgorithms {
-    public static <L extends GenericsList<T>, T extends Describeable & Comparable<T> & Cloneable> void selectionSort(@NotNull L tList) {
+    public static <L extends GenericsList<T>, T extends Describable & Comparable<T> & Cloneable> void selectionSort(L tList) {
         Iterator<T> iterator = tList.iterator();
         int ind = 0;
         while (iterator.hasNext()) {
@@ -36,7 +35,7 @@ public class CustomSortingAlgorithms {
 
     }
 
-    public static <L extends GenericsList<T>, T extends Describeable & Comparable<T> & Cloneable> void insertionSort(@NotNull L tList) {
+    public static <L extends GenericsList<T>, T extends Describable & Comparable<T> & Cloneable> void insertionSort(L tList) {
         Iterator<T> iterator = tList.iterator();
         T cur;
         while (iterator.hasNext()) {
@@ -58,7 +57,7 @@ public class CustomSortingAlgorithms {
 
     }
 
-    public static <L extends GenericsList<T>, T extends Describeable & Comparable<T> & Cloneable> void bubbleSort(@NotNull L tList) {
+    public static <L extends GenericsList<T>, T extends Describable & Comparable<T> & Cloneable> void bubbleSort(L tList) {
         Iterator<T> iterator = tList.iterator();
         T cur;
         boolean swapped;
@@ -83,20 +82,20 @@ public class CustomSortingAlgorithms {
         }
     }
 
-    public static <L extends GenericsList<T>, T extends Describeable & Comparable<T> & Cloneable> void selectionSortRecursive(@NotNull L tList) {
+    public static <L extends GenericsList<T>, T extends Describable & Comparable<T> & Cloneable> void selectionSortRecursive(L tList) {
         helperSS(tList, 0);
     }
 
-    public static <L extends GenericsList<T>, T extends Describeable & Comparable<T> & Cloneable> void insertionSortRecursive(@NotNull L tList) {
+    public static <L extends GenericsList<T>, T extends Describable & Comparable<T> & Cloneable> void insertionSortRecursive(L tList) {
         helperIS(tList, 0);
     }
 
-    public static <L extends GenericsList<T>, T extends Describeable & Comparable<T> & Cloneable> void bubbleSortRecursive(@NotNull L tList) {
+    public static <L extends GenericsList<T>, T extends Describable & Comparable<T> & Cloneable> void bubbleSortRecursive(L tList) {
         helperBS(tList, 0);
     }
 
     //These are the functions that actually complete the Recursive sorting algorithms process
-    private static <L extends GenericsList<T>, T extends Describeable & Comparable<T> & Cloneable> void helperSS(L tList, int ind) {
+    private static <L extends GenericsList<T>, T extends Describable & Comparable<T> & Cloneable> void helperSS(L tList, int ind) {
         if (tList.size() == ind) {
             return;
         }
@@ -119,7 +118,7 @@ public class CustomSortingAlgorithms {
         helperSS(tList, ind + 1);
     }
 
-    private static <L extends GenericsList<T>, T extends Describeable & Comparable<T> & Cloneable> void helperIS(L tList, int ind) {
+    private static <L extends GenericsList<T>, T extends Describable & Comparable<T> & Cloneable> void helperIS(L tList, int ind) {
         if (tList.size() == ind) {
             return;
         }
@@ -138,7 +137,7 @@ public class CustomSortingAlgorithms {
         helperIS(tList, ind + 1);
     }
 
-    private static <L extends GenericsList<T>, T extends Describeable & Comparable<T> & Cloneable> void helperBS(L tList, int ind) {
+    private static <L extends GenericsList<T>, T extends Describable & Comparable<T> & Cloneable> void helperBS(L tList, int ind) {
         if (tList.size() == ind) {
             return;
         }

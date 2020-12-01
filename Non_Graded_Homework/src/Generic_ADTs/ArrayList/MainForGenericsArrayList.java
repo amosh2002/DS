@@ -1,8 +1,5 @@
 package Generic_ADTs.ArrayList;
-
-import Shape_and_subclasses.Circle;
-import Shape_and_subclasses.Rectangle;
-import Shape_and_subclasses.Shape;
+import Shape_and_subclasses.*;
 
 public class MainForGenericsArrayList {
     public static void main(String[] args) {

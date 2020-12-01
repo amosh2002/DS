@@ -1,9 +1,8 @@
 package Generic_ADTs.Deque;
 
 import Generic_ADTs.LinkedList.GenericsLinkedList;
-import Shape_and_subclasses.Circle;
-import Shape_and_subclasses.Rectangle;
-import Shape_and_subclasses.Shape;
+import Shape_and_subclasses.*;
+
 
 import java.util.Iterator;
 
