@@ -3,7 +3,6 @@ package Shapes_ADTs.LinkedList;
 import Shape_and_subclasses.Shape;
 import Shapes_ADTs.ShapesList;
 
-
 import java.util.Iterator;
 
 public class ShapesLinkedList implements ShapesList, Iterable<Shape>, Cloneable {
@@ -43,6 +42,43 @@ public class ShapesLinkedList implements ShapesList, Iterable<Shape>, Cloneable 
         size++;
     }
 
+    public void addAll(ShapesLinkedList list2) {
+        if (size == 0 || list2.size == 0) {
+            return;
+        }
+        last.next = list2.first;
+        list2.first.prev = last;
+        size += list2.size;
+        last = list2.last;
+    }
+
+    public void addAll(int index, ShapesLinkedList e) {
+        if (isEmpty()) {
+            first = e.first;
+            last = e.last;
+            return;
+        } else if (index == 0) {
+            e.last.next = first;
+            first.prev = e.last;
+            size += e.size;
+            first = e.first;
+            return;
+        } else if (index == size) {
+            addAll(e);
+            return;
+        } else {
+            Shape cur = first;
+            for (int i = 0; i < index - 1; i++) {
+                cur = cur.next;
+            }
+            e.last.next = cur.next;
+            cur.next.prev = e.last;
+            cur.next = e.first;
+            e.first.prev = cur;
+        }
+        size += e.size;
+    }
+
     @Override
     public void removeLast() {
         if (!isEmpty()) {
@@ -79,16 +115,17 @@ public class ShapesLinkedList implements ShapesList, Iterable<Shape>, Cloneable 
         if (index == size - 1) {
             removeLast();
             return;
-        }
-        if (index == 0) {
+        } else if (index == 0) {
             removeFirst();
             return;
         }
         Shape cur = getElementAt(index);
-        (cur.next).prev = cur.prev;
-        (cur.prev).next = cur.next;
-        cur.next = null;
-        cur.prev = null;
+        if (cur == null) {
+            return;
+        }
+        cur.next.prev = cur.prev;
+        cur.prev.next = cur.next;
+        cur.next = cur.prev = null;
         size--;
 
     }
@@ -134,6 +171,30 @@ public class ShapesLinkedList implements ShapesList, Iterable<Shape>, Cloneable 
         }
     }
 
+    public void removeLastOccurrence(Shape e) {
+        if (!isEmpty()) {
+            if (lastIndexOf(e) == size - 1) {
+                removeLast();
+                return;
+            } else if (lastIndexOf(e) == 0) {
+                removeFirst();
+                return;
+            }
+            Shape cur = last;
+            while (cur != null) {
+                if (cur.equals(e)) {
+                    cur.next.prev = cur.prev;
+                    cur.prev.next = cur.next;
+                    cur.next = null;
+                    cur.prev = null;
+                    size--;
+                }
+                cur = cur.prev;
+            }
+
+        }
+    }
+
     @Override
     public int size() {
         return size;
@@ -173,6 +234,21 @@ public class ShapesLinkedList implements ShapesList, Iterable<Shape>, Cloneable 
         return -1;
     }
 
+    public int lastIndexOf(Shape e) {
+        if (isEmpty()) {
+            return -1;
+        }
+        int toReturn = -1;
+        Shape cur = first;
+        for (int i = 0; i < size; i++) {
+            if (cur.equals(e)) {
+                toReturn = i;
+            }
+            cur = cur.next;
+        }
+        return toReturn;
+    }
+
     public Shape getElementAt(int index) {
         if (index < 0 || index > size) {
             return null;
@@ -185,6 +261,10 @@ public class ShapesLinkedList implements ShapesList, Iterable<Shape>, Cloneable 
             cur = cur.next;
         }
         return cur;
+    }
+
+    public boolean contains(Shape e) {
+        return indexOf(e) != -1;
     }
 
     public Shape getFirst() {
@@ -213,29 +293,104 @@ public class ShapesLinkedList implements ShapesList, Iterable<Shape>, Cloneable 
         return (ShapesLinkedList) super.clone();
     }
 
+    public Shape[] toArray() {
+        Shape[] newShapes = new Shape[size];
+        Iterator<Shape> itr = iterator();
+        int i = 0;
+        while (itr.hasNext()) {
+            newShapes[i] = itr.next();
+        }
+        return newShapes;
+    }
+
+    public void set(int index, Shape e) {
+        removeElementAt(index);
+        add(index, e);
+    }
+
     @Override
     public Iterator<Shape> iterator() {
         return new LinkedListIterator();
     }
 
+    public Iterator<Shape> reverseIterator() {
+        return new ReverseLinkedListIterator();
+    }
+
     public class LinkedListIterator implements Iterator<Shape> {
-        private int index = 0;
+        private Shape current = first;
 
         @Override
         public boolean hasNext() {
-            return index < size;
+            return current != null;
         }
 
         @Override
         public Shape next() {
-            return getElementAt(index++);
+            Shape toReturn = current;
+            current = current.next;
+            return toReturn;
+        }
+    }
+
+    public class ReverseLinkedListIterator implements Iterator<Shape> {
+        private Shape current = last;
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
         }
 
         @Override
-        public void remove() {
-            removeElementAt(--index);
+        public Shape next() {
+            Shape toReturn = current;
+            current = current.prev;
+            return toReturn;
         }
     }
+
+    public class LinkedListStartingShapeIterator implements Iterator<Shape> {
+        private Shape current;
+
+        public LinkedListStartingShapeIterator(Shape current) {
+            this.current = current;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public Shape next() {
+            Shape toReturn = current;
+            current = current.next;
+            return toReturn;
+        }
+    }
+
+    public class ReverseLinkedListStartingShapeIterator implements Iterator<Shape> {
+        private Shape current;
+
+        public ReverseLinkedListStartingShapeIterator(Shape current) {
+            this.current = current;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public Shape next() {
+            Shape toReturn = current;
+            current = current.prev;
+            return toReturn;
+        }
+    }
+
+
+    //Not Needed-------------------------------------------------------------//
 
     public Iterator<String> namesIterator() {
         return new ShapesLinkedList.ShapeNameIterator();

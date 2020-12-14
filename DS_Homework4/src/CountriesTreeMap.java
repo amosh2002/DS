@@ -53,6 +53,11 @@ public class CountriesTreeMap<K extends Comparable<K>, V> implements Iterable<V>
         return null;
     }
 
+    public void replaceValue(K key, V value) {
+        Entry toChange = get(root, key);
+        toChange.value = value;
+    }
+
     public void put(K key, V value) {
         if (root == null) {
             root = new Entry(key, value);
@@ -147,6 +152,18 @@ public class CountriesTreeMap<K extends Comparable<K>, V> implements Iterable<V>
         return tmp.value;
     }
 
+    public ArrayList<Entry> subMap(K fromKey, K toKey) {
+        ArrayList<Entry> arrl = new ArrayList<>();
+        Iterator<Entry> itr = new LevelOrderEntryIteratorStack();
+        while (itr.hasNext()) {
+            Entry cur = itr.next();
+            if (cur.key.compareTo(fromKey) >= 0 && cur.key.compareTo(toKey) < 0) {
+                arrl.add(cur);
+            }
+        }
+        return arrl;
+    }
+
     public V mostConfirmedCases() {
         return getLargestEntry(root).value;
     }
@@ -169,8 +186,17 @@ public class CountriesTreeMap<K extends Comparable<K>, V> implements Iterable<V>
         return getLowestEntry(entry.left);
     }
 
+    public void removeSmallestEntry() {
+        Entry lowest = getLowestEntry(root);
+        remove(lowest.key);
+    }
+
     public boolean hasKey(K k) {
         return get(k) != null;
+    }
+
+    public K ceilingKey(K key) {
+        return ceiling(root, key).key;
     }
 
     public V ceilingEntry(K key) {
@@ -197,6 +223,10 @@ public class CountriesTreeMap<K extends Comparable<K>, V> implements Iterable<V>
 
     public V flooringEntry(K key) {
         return flooring(root, key).value;
+    }
+
+    public K flooringEntryKey(K key) {
+        return flooring(root, key).key;
     }
 
     private Entry flooring(Entry root, K coming) {
@@ -261,6 +291,37 @@ public class CountriesTreeMap<K extends Comparable<K>, V> implements Iterable<V>
                 shapesDeque.addLast(toReturn.right);
             }
             return toReturn.value;
+        }
+    }
+
+    private class LevelOrderEntryIteratorStack implements Iterator<Entry> {
+        Deque<Entry> shapesDeque;
+
+        public LevelOrderEntryIteratorStack() {
+            if (root == null) {
+                return;
+            }
+            shapesDeque = new ArrayDeque<>();
+            shapesDeque.addFirst(root);
+        }
+
+
+        @Override
+        public boolean hasNext() {
+            return !shapesDeque.isEmpty();
+        }
+
+        @Override
+        public Entry next() {
+            Entry toReturn = shapesDeque.getFirst();
+            shapesDeque.removeFirst();
+            if (toReturn.left != null) {
+                shapesDeque.addLast(toReturn.left);
+            }
+            if (toReturn.right != null) {
+                shapesDeque.addLast(toReturn.right);
+            }
+            return toReturn;
         }
     }
 

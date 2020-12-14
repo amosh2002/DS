@@ -48,6 +48,15 @@ public class ShapesLinkedListStack implements ShapesStack, Iterable<Shape> {
     public Iterator<Shape> iterator() {
         return new ShapesLLStackIterator();
     }
+    public Iterator<Shape> startingIndexIterator(int index) {
+        return new ShapesStartingIndexLLStackIterator(index);
+    }
+    public Iterator<Shape> reverseIterator() {
+        return new ShapesReverseLLStackIterator();
+    }
+    public Iterator<Shape> reverseIndexIterator(int index) {
+        return new ShapesReverseIndexLLStackIterator(index);
+    }
 
     public class ShapesLLStackIterator implements Iterator<Shape> {
         Shape cur;
@@ -68,4 +77,62 @@ public class ShapesLinkedListStack implements ShapesStack, Iterable<Shape> {
             return tmp;
         }
     }
+    public class ShapesStartingIndexLLStackIterator implements Iterator<Shape> {
+        Shape cur;
+
+        public ShapesStartingIndexLLStackIterator(int index) {
+            cur = shapes.getElementAt(index);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return cur != null;
+        }
+
+        @Override
+        public Shape next() {
+            Shape tmp = cur;
+            cur = cur.next;
+            return tmp;
+        }
+    }
+    public class ShapesReverseLLStackIterator implements Iterator<Shape> {
+        Shape cur;
+
+        public ShapesReverseLLStackIterator() {
+            cur = top();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return cur != null;
+        }
+
+        @Override
+        public Shape next() {
+            Shape tmp = cur;
+            cur = cur.prev;
+            return tmp;
+        }
+    }
+    public class ShapesReverseIndexLLStackIterator implements Iterator<Shape> {
+        Shape cur;
+
+        public ShapesReverseIndexLLStackIterator(int index) {
+            cur = shapes.getElementAt(index);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return cur != null;
+        }
+
+        @Override
+        public Shape next() {
+            Shape tmp = cur;
+            cur = cur.prev;
+            return tmp;
+        }
+    }
+
 }

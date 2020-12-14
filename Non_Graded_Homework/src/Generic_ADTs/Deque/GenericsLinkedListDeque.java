@@ -1,13 +1,12 @@
 package Generic_ADTs.Deque;
 
+import Generic_ADTs.LinkedList.GenericsLinkedList;
 import Shape_and_subclasses.Describable;
-import Generic_ADTs.LinkedList.*;
 
 import java.util.Iterator;
 
 public class GenericsLinkedListDeque<T extends Describable & Cloneable & Comparable<T>> implements GenericsDeque<T>, Iterable<T> {
     GenericsLinkedList<T> tList;
-    int size;
 
     public GenericsLinkedListDeque() {
         tList = new GenericsLinkedList<T>();
@@ -54,9 +53,17 @@ public class GenericsLinkedListDeque<T extends Describable & Cloneable & Compara
         return tList.isEmpty();
     }
 
+    public int size() {
+        return tList.size();
+    }
+
     @Override
     public Iterator<T> iterator() {
         return tList.iterator();
+    }
+
+    public Iterator<T> reverseIterator() {
+        return tList.reverseEndIndexIterator(size() - 1);
     }
 
 }

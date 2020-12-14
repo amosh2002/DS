@@ -77,6 +77,15 @@ public class ShapesArrayQueue implements ShapesQueue, Iterable<Shape> {
     public Iterator<Shape> iterator() {
         return new ShapeIterator();
     }
+    public Iterator<Shape> startingIndexIterator(int index) {
+        return new ShapeStartingIndexIterator(index);
+    }
+    public Iterator<Shape> reverseIterator() {
+        return new ReverseALQueueIterator();
+    }
+    public Iterator<Shape> reverseIndexIterator(int index) {
+        return new ReverseALQueueIndexIterator(index);
+    }
 
     public class ShapeIterator implements Iterator<Shape> {
         private int index;
@@ -97,14 +106,68 @@ public class ShapesArrayQueue implements ShapesQueue, Iterable<Shape> {
             }
             return null;
         }
-/*
-        @Override
-        public void remove() {
-            deque();
-            index--;
+
+    }
+    public class ShapeStartingIndexIterator implements Iterator<Shape> {
+        private int index;
+
+        public ShapeStartingIndexIterator(int index) {
+            this.index = index;
         }
 
- */
+        @Override
+        public boolean hasNext() {
+            return shapes[index % shapes.length] != null;
+        }
+
+        @Override
+        public Shape next() {
+            if (hasNext()) {
+                return shapes[(index++) % shapes.length];
+            }
+            return null;
+        }
+
+    }
+    public class ReverseALQueueIterator implements Iterator<Shape> {
+        private int index;
+
+        public ReverseALQueueIterator() {
+            index = (first + size - 1) % shapes.length;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index > (first - 1) % shapes.length;
+        }
+
+        @Override
+        public Shape next() {
+            if (hasNext()) {
+                return shapes[(index-- + shapes.length) % shapes.length];
+            }
+            return null;
+        }
+    }
+    public class ReverseALQueueIndexIterator implements Iterator<Shape> {
+        private int index;
+
+        public ReverseALQueueIndexIterator(int index) {
+            this.index = index;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index > (first - 1) % shapes.length;
+        }
+
+        @Override
+        public Shape next() {
+            if (hasNext()) {
+                return shapes[(index-- + shapes.length) % shapes.length];
+            }
+            return null;
+        }
     }
 
 }

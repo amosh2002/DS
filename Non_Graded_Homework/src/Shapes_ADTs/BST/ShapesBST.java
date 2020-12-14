@@ -273,31 +273,6 @@ public class ShapesBST implements Iterable<Shape>, BSTIterators {
         return true;
     }
 
-    //TODO: Has problems
-    public boolean isSubtree(ShapesBST chujoy) {
-        ArrayList<Shape> nashList = new ArrayList<>();
-        ArrayList<Shape> chujoyList = new ArrayList<>();
-        ArrayList<Shape> nashListPost = new ArrayList<>();
-        ArrayList<Shape> chujoyListPost = new ArrayList<>();
-        Iterator<Shape> nashItr = iterator();
-        Iterator<Shape> chujoyItr = chujoy.iterator();
-        Iterator<Shape> nashItrPost = postOrderIterator();
-        Iterator<Shape> chujoyItrPost = chujoy.postOrderIterator();
-        while (nashItr.hasNext()) {
-            nashList.add(nashItr.next());
-        }
-        while (chujoyItr.hasNext()) {
-            chujoyList.add(chujoyItr.next());
-        }
-        while (nashItrPost.hasNext()) {
-            nashListPost.add(nashItrPost.next());
-        }
-        while (chujoyItrPost.hasNext()) {
-            chujoyListPost.add(chujoyItrPost.next());
-        }
-
-        return toString(nashList).contains(toString(chujoyList)) && toString(nashListPost).contains(toString(chujoyListPost));
-    }
 
     private String toString(List<Shape> list) {
         if (list == null) {
@@ -316,6 +291,14 @@ public class ShapesBST implements Iterable<Shape>, BSTIterators {
 
     private Iterator<Shape> startingPointIterator(Node startingNode) {
         return new InOrderIteratorNormal(startingNode);
+    }
+
+    private Iterator<Shape> reverseInOrderIterator() {
+        return new InOrderIteratorStackReverse(root);
+    }
+
+    private Iterator<Shape> reverseInOrderIteratorStartingPoint(Node startingNode) {
+        return new InOrderIteratorStackReverse(startingNode);
     }
 
     private class InOrderIteratorNormal implements Iterator<Shape> {
@@ -404,10 +387,128 @@ public class ShapesBST implements Iterable<Shape>, BSTIterators {
         }
     }
 
+    private class InOrderIteratorStackReverse implements Iterator<Shape> {
+        Stack<Node> stack;
+
+        public InOrderIteratorStackReverse(Node start) {
+            if (start == null) {
+                return;
+            }
+            Node tmp = start;
+            stack = new Stack<>();
+            while (tmp != null) {
+                stack.push(tmp);
+                tmp = tmp.right;
+            }
+        }
+
+        public boolean hasNext() {
+            return !stack.isEmpty();
+        }
+
+        public Shape next() {
+            Node tmp = stack.pop();
+            Shape toReturn = tmp.data;
+            if (tmp.left != null) {
+                tmp = tmp.left;
+                while (tmp != null) {
+                    stack.push(tmp);
+                    tmp = tmp.right;
+                }
+            }
+            return toReturn;
+        }
+    }
+
     //PostOrder Iterator
     @Override
     public Iterator<Shape> postOrderIterator() {
         return new PostOrderIteratorStack();
+    }
+
+    public Iterator<Shape> postOrderIteratorNormal() {
+        return new PostOrderIteratorNormal();
+    }
+
+    private class PostOrderIteratorNormal implements Iterator<Shape> {
+        Node current;
+        boolean goingUp = false;
+
+        private PostOrderIteratorNormal() {
+            if (root == null) {
+                return;
+            }
+            current = root;
+            while (current.left != null) {
+                current = current.left;
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public Shape next() {
+            Node toReturn = current;
+            while (true) {
+                Node top = toReturn.parent;
+                if (top == null) {
+                    current = null;
+                    return toReturn.data;
+                }
+                Node cur = top.right;
+                if (cur == null) {
+                    current = top;
+                    goingUp = true;
+                    return toReturn.data;
+                }
+                if (!goingUp) {
+                    while (cur.right != null) {
+                        while (cur.left != null) {
+                            cur = cur.left;
+                        }
+                        if (cur.right != null) {
+                            cur = cur.right;
+                        }
+                    }
+                    goingUp = false;
+                }
+
+                if (cur == toReturn) {
+                    current = top;
+                    goingUp = false;
+                    return toReturn.data;
+                }
+                current = cur;
+                break;
+            }
+            return toReturn.data;
+
+            /*if (current.parent == null) {
+                current = null;
+                return toReturn.data;
+            } else {
+                while (true) {
+                    if (current.parent.left == current) {
+                        current = current.parent;
+                    }
+                    if (current.right != null) {
+                        current = current.right;
+                        while (current.left != null) {
+                            current = current.left;
+                        }
+                        return toReturn.data;
+                    }
+                    if (current.parent.right == current) {
+                        current = current.parent;
+                    }
+                    return toReturn.data;
+                }
+            }*/
+
+        }
     }
 
     private class PostOrderIteratorStack implements Iterator<Shape> {
@@ -439,7 +540,6 @@ public class ShapesBST implements Iterable<Shape>, BSTIterators {
             if (!shapesStack.isEmpty()) {
                 Node top = shapesStack.peek();
                 if (toReturn.equals(top.left)) {
-                    //go and find the leaf of the right wing
                     Node tmp = top.right;
                     while (tmp != null) {
                         shapesStack.push(tmp);
@@ -447,6 +547,50 @@ public class ShapesBST implements Iterable<Shape>, BSTIterators {
                             tmp = tmp.left;
                         } else {
                             tmp = tmp.right;
+                        }
+                    }
+                }
+            }
+            return toReturn.data;
+        }
+    }
+
+    private class ReversePostOrderIteratorStack implements Iterator<Shape> {
+        Stack<Node> shapesStack;
+
+        private ReversePostOrderIteratorStack() {
+            Node tmp = root;
+            if (tmp != null) {
+                shapesStack = new Stack<>();
+            }
+            while (tmp != null) {
+                shapesStack.push(tmp);
+                if (tmp.right != null) {
+                    tmp = tmp.right;
+                } else {
+                    tmp = tmp.left;
+                }
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !shapesStack.isEmpty();
+        }
+
+        @Override
+        public Shape next() {
+            Node toReturn = shapesStack.pop();
+            if (!shapesStack.isEmpty()) {
+                Node top = shapesStack.peek();
+                if (toReturn.equals(top.right)) {
+                    Node tmp = top.left;
+                    while (tmp != null) {
+                        shapesStack.push(tmp);
+                        if (tmp.right != null) {
+                            tmp = tmp.right;
+                        } else {
+                            tmp = tmp.left;
                         }
                     }
                 }

@@ -2,6 +2,7 @@ package Generic_ADTs.Deque;
 
 import Shape_and_subclasses.Describable;
 import Shape_and_subclasses.Shape;
+import Shapes_ADTs.Queue.ShapesArrayQueue;
 
 import java.util.Iterator;
 
@@ -28,16 +29,15 @@ public class GenericsArrayListDeque<T extends Describable> implements GenericsDe
             }
             tList = newShapes;
             first = 0;
-
         }
     }
 
     @Override
     public void push_front(T tItem) {
-        resize();
         tList[(first - 1 + tList.length) % tList.length] = tItem;
         first = (first - 1 + tList.length) % tList.length;
         size++;
+        resize();
     }
 
     @Override
@@ -54,8 +54,8 @@ public class GenericsArrayListDeque<T extends Describable> implements GenericsDe
 
     @Override
     public void push_back(T tItem) {
-        resize();
         tList[(first + size++) % tList.length] = tItem;
+        resize();
     }
 
     @Override
@@ -80,6 +80,10 @@ public class GenericsArrayListDeque<T extends Describable> implements GenericsDe
             return (T) tList[(first + size - 1) % tList.length];
         }
         return null;
+    }
+
+    public int getLastIndex() {
+        return (first + size - 1) % tList.length;
     }
 
     @Override
@@ -108,6 +112,31 @@ public class GenericsArrayListDeque<T extends Describable> implements GenericsDe
         public T next() {
             if (hasNext()) {
                 return (T) tList[(index++) % tList.length];
+            }
+            return null;
+        }
+    }
+
+    public Iterator<T> reverseIterator() {
+        return new ReverseALDequeIterator();
+    }
+
+    public class ReverseALDequeIterator implements Iterator<T> {
+        private int index;
+
+        public ReverseALDequeIterator() {
+            index = (first + size - 1) % tList.length;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index > (first - 1) % tList.length;
+        }
+
+        @Override
+        public T next() {
+            if (hasNext()) {
+                return (T) tList[(index-- + tList.length) % tList.length];
             }
             return null;
         }

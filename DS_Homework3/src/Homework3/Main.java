@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 public class Main {
+
     public static Country searchSmallestBy(CountriesHashMap<String, Country> countriesHashMap, Comparator<Country> comparator) {
         Country initial = null;
         for (Country country : countriesHashMap) {
@@ -51,7 +52,6 @@ public class Main {
             System.out.println(levelOrderIterator.next().toString());
         }
         System.out.println("Level-order Iterator Complete!");
-
 
 
     }

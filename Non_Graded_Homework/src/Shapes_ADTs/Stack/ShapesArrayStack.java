@@ -2,7 +2,9 @@ package Shapes_ADTs.Stack;
 
 import Shape_and_subclasses.Shape;
 
-public class ShapesArrayStack implements ShapesStack {
+import java.util.Iterator;
+
+public class ShapesArrayStack implements ShapesStack, Iterable<Shape> {
     private Shape[] shapes;
     private int size;
 
@@ -45,7 +47,7 @@ public class ShapesArrayStack implements ShapesStack {
     }
 
     public Shape top() {
-        if(checkForZeroSize()){
+        if (checkForZeroSize()) {
             return shapes[size - 1];
         }
         return null;
@@ -53,7 +55,7 @@ public class ShapesArrayStack implements ShapesStack {
 
 
     public Shape bottom() {
-        if(checkForZeroSize()){
+        if (checkForZeroSize()) {
             return shapes[0];
         }
         return null;
@@ -77,5 +79,90 @@ public class ShapesArrayStack implements ShapesStack {
             }
         }
         System.out.println(" ]");
+    }
+
+    @Override
+    public Iterator<Shape> iterator() {
+        return new ShapeIterator();
+    }
+
+    public Iterator<Shape> startingIndexIterator(int index) {
+        return new ShapeStartingIndexIterator(index);
+    }
+
+    public Iterator<Shape> reverseIterator() {
+        return new ReverseShapeIterator();
+    }
+
+    public Iterator<Shape> reverseStartingIndexIterator(int index) {
+        return new ReverseStartingIndexShapeIterator(index);
+    }
+
+    public class ShapeIterator implements Iterator<Shape> {
+        private int index;
+
+        @Override
+        public boolean hasNext() {
+            return index < size;
+        }
+
+        @Override
+        public Shape next() {
+            return shapes[index++];
+        }
+
+    }
+
+    public class ShapeStartingIndexIterator implements Iterator<Shape> {
+        private int index;
+
+        public ShapeStartingIndexIterator(int index) {
+            this.index = index;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < size;
+        }
+
+        @Override
+        public Shape next() {
+            return shapes[index++];
+        }
+
+    }
+
+    public class ReverseShapeIterator implements Iterator<Shape> {
+        private int index = size - 1;
+
+        @Override
+        public boolean hasNext() {
+            return index >= 0;
+        }
+
+        @Override
+        public Shape next() {
+            return shapes[index--];
+        }
+
+    }
+
+    public class ReverseStartingIndexShapeIterator implements Iterator<Shape> {
+        private int index;
+
+        public ReverseStartingIndexShapeIterator(int index) {
+            this.index = index;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index >= 0;
+        }
+
+        @Override
+        public Shape next() {
+            return shapes[index--];
+        }
+
     }
 }

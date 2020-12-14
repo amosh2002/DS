@@ -1,6 +1,6 @@
 package Shapes_ADTs.Queue;
 
-import Shape_and_subclasses.*;
+import Shape_and_subclasses.Shape;
 import Shapes_ADTs.LinkedList.ShapesLinkedList;
 
 import java.util.Iterator;
@@ -10,6 +10,33 @@ public class ShapesLinkedListQueue implements ShapesQueue, Iterable<Shape> {
 
     public ShapesLinkedListQueue() {
         this.shapes = new ShapesLinkedList();
+    }
+
+    @Override
+    public void enqueue(Shape e) {
+        shapes.addLast(e);
+    }
+
+    @Override
+    public Shape deque() {
+        Shape first = first();
+        shapes.removeFirst();
+        return first;
+    }
+
+    @Override
+    public Shape first() {
+        return shapes.getFirst();
+    }
+
+    @Override
+    public Shape last() {
+        return shapes.getLast();
+    }
+
+    @Override
+    public Shape elementAt(int index) {
+        return shapes.getElementAt(index);
     }
 
     @Override
@@ -48,32 +75,5 @@ public class ShapesLinkedListQueue implements ShapesQueue, Iterable<Shape> {
             }
             deque();
         }
-    }
-
-    @Override
-    public void enqueue(Shape e) {
-        shapes.addLast(e);
-    }
-
-    @Override
-    public Shape deque() {
-        Shape first = first();
-        shapes.removeFirst();
-        return first;
-    }
-
-    @Override
-    public Shape first() {
-        return shapes.getFirst();
-    }
-
-    @Override
-    public Shape last() {
-        return shapes.getLast();
-    }
-
-    @Override
-    public Shape elementAt(int index) {
-        return shapes.getElementAt(index);
     }
 }

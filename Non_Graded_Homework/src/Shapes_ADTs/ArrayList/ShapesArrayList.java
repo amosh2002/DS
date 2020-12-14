@@ -1,7 +1,8 @@
 package Shapes_ADTs.ArrayList;
 
 import Shape_and_subclasses.*;
-import Shapes_ADTs.*;
+import Shapes_ADTs.CustomShapesIterators;
+import Shapes_ADTs.ShapesList;
 
 import java.util.Iterator;
 
@@ -123,6 +124,75 @@ public class ShapesArrayList implements Iterable<Shape>, CustomShapesIterators, 
         size--;
     }
 
+    public void removeAll(Shape[] shapesuk) {
+        for (int i = 0; i < size; i++) {
+            boolean isMatched = false;
+            for (Shape shape : shapesuk) {
+                if (shapes[i].equals(shape)) {
+                    isMatched = true;
+                    break;
+                }
+            }
+            if (isMatched) {
+                removeElementAt(i);
+            }
+        }
+    }
+
+    public void retainAll(Shape[] shapesuk) {
+        for (int i = 0; i < size; i++) {
+            boolean isMatched = false;
+            for (Shape shape : shapesuk) {
+                if (shapes[i].equals(shape)) {
+                    isMatched = true;
+                    break;
+                }
+            }
+            if (!isMatched) {
+                removeElementAt(i);
+            }
+        }
+    }
+
+    public ShapesArrayList subList(int from, int to) {
+        if (from >= size || to < 0) {
+            return null;
+        }
+        if (from < 0) {
+            from = 0;
+        }
+        if (to >= size) {
+            to = size - 1;
+        }
+        ShapesArrayList shps = new ShapesArrayList(to - from + 1);
+        for (int i = from; i <= to; i++) {
+            shps.addLast(shapes[i]);
+        }
+        return shps;
+    }
+
+    public void set(int index, Shape sh) {
+        if (index < 0 || index >= size) {
+            return;
+        }
+        shapes[index] = sh;
+    }
+
+    public void removeRange(int from, int to) {
+        if (from >= size || to < 0) {
+            return;
+        }
+        if (from < 0) {
+            from = 0;
+        }
+        if (to >= size) {
+            to = size - 1;
+        }
+        for (int i = from; i <= to; i++) {
+            removeElementAt(i);
+        }
+    }
+
     @Override
     public int size() {
         return size;
@@ -142,11 +212,35 @@ public class ShapesArrayList implements Iterable<Shape>, CustomShapesIterators, 
     @Override
     public int indexOf(Shape e) {
         for (int i = 0; i < shapes.length; i++) {
+            if (shapes[i] == null) {
+                continue;
+            }
             if (shapes[i].equals(e)) {
                 return i;
             }
         }
         return -1;
+    }
+
+    public int lastIndexOf(Shape e) {
+        int toReturn = -1;
+        for (int i = 0; i < shapes.length; i++) {
+            if (shapes[i] == null) {
+                continue;
+            }
+            if (shapes[i].equals(e)) {
+                toReturn = i;
+            }
+        }
+        return toReturn;
+    }
+
+    public boolean contains(Shape e) {
+        return indexOf(e) != -1;
+    }
+
+    public Shape[] toArray() {
+        return shapes.clone();
     }
 
     @Override
@@ -163,7 +257,18 @@ public class ShapesArrayList implements Iterable<Shape>, CustomShapesIterators, 
 
     @Override
     public Iterator<Shape> iterator() {
-        return new ShapeIterator();
+        return new ShapeStartingIndexIterator(0);
+    }
+
+    public Iterator<Shape> reverseIterator() {
+        return new ReverseShapeIterator();
+    }
+    public Iterator<Shape> iteratorIndex(int index) {
+        return new ShapeStartingIndexIterator(index);
+    }
+
+    public Iterator<Shape> reverseIteratorIndex(int index) {
+        return new ReverseIndexShapeIterator(index);
     }
 
     public class ShapeIterator implements Iterator<Shape> {
@@ -179,10 +284,59 @@ public class ShapesArrayList implements Iterable<Shape>, CustomShapesIterators, 
             return shapes[index++];
         }
 
+    }
+
+    public class ReverseShapeIterator implements Iterator<Shape> {
+        private int index = size - 1;
+
         @Override
-        public void remove() {
-            removeElementAt(index--);
+        public boolean hasNext() {
+            return index >= 0;
         }
+
+        @Override
+        public Shape next() {
+            return shapes[index--];
+        }
+
+    }
+
+    public class ShapeStartingIndexIterator implements Iterator<Shape> {
+        private int index;
+
+        public ShapeStartingIndexIterator(int index) {
+            this.index = index;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < size;
+        }
+
+        @Override
+        public Shape next() {
+            return shapes[index++];
+        }
+
+    }
+
+    public class ReverseIndexShapeIterator implements Iterator<Shape> {
+        private int index;
+
+        public ReverseIndexShapeIterator(int index) {
+            this.index = index;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index >= 0;
+        }
+
+        @Override
+        public Shape next() {
+            return shapes[index--];
+        }
+
     }
 
     public class ShapeNameIterator implements Iterator<String> {

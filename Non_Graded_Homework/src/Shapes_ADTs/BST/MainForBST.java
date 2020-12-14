@@ -61,7 +61,19 @@ public class MainForBST {
         btree2.insertNonRec(square6);
         btree2.insertNonRec(square7);
         btree2.insertNonRec(square8);
-        System.out.println(btree.isSubtree(btree2));
+        //System.out.println(btree.isSubtree(btree2));
+        System.out.println("Post order stack Iterator");
+        Iterator<Shape> postStack = btree.postOrderIterator();
+        while (postStack.hasNext()) {
+            postStack.next().describe();
+            System.out.println();
+        }
+        System.out.println("Post order Iterator");
+        Iterator<Shape> postNorm = btree.postOrderIteratorNormal();
+        while (postNorm.hasNext()) {
+            postNorm.next().describe();
+            System.out.println();
+        }
 
     }
 }
